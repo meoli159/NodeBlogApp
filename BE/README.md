@@ -1,13 +1,15 @@
 # Blog App BE
 
-**!!! Because this is for interview so there will some files will be set to public.** <br>
-**!!! Some files will be set to private by the end of the interview.** <br>
-=> Due to lack of knowledge the project will be unfinished but I will continue to complete this project after the deadline 12PM VN time 10/Nov
+**=> So this is just a BE. That It nothing else.**
 
-## To start
+## How to run the BE
 
-**Run** `yarn && yarn dev`<br>
+- Install packages with `yarn`
 
-**If you need seed data run** `yarn seed` **to add data into DB**
+- Add seed data run `yarn seed`
 
-=> **Contact: minhtien02052001@gmail.com if there is problem**
+  - => Note: Work with mongodb only!
+
+- It's Dev time: `yarn dev` :))
+
+Oh yeah I forgot. Remember to remove .env **_.sample_** and put your own config.
