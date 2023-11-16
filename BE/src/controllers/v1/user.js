@@ -35,6 +35,13 @@ export const register = async (req, res) => {
     if (existUser) {
       return res.status(400).json({ message: 'username already existed' });
     }
+
+    if (password && password.length <= 6) {
+      return res.json({
+        message: 'Please provide a password with more than 6 characters',
+      });
+    }
+
     const user = await User.create({
       username: username,
       password: await hashPassword(password),
