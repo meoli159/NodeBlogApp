@@ -8,4 +8,4 @@
 
 **!!! One more think, If there something relate to this project**
 
-=> Contact CyrusNES@proton.me
+=> Contact: CyrusNES@proton.me
