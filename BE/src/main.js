@@ -9,10 +9,10 @@ const port = process.env.PORT || 3333;
 
 app.use(express.json());
 app.use(cors({ origin: process.env.REACT_URL }));
-DBConnect();
 
 app.use('/api/v1', routes);
 
-app.listen(port, () => {
+app.listen(port, async () => {
+  await DBConnect();
   console.log(`Example app listening on http://127.0.0.1:${port}`);
 });
