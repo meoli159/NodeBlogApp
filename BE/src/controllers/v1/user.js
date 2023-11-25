@@ -1,10 +1,10 @@
 import { User } from '../../models/user.js';
 import { compareHashPassword, hashPassword } from '../../utils/authUtil.js';
 
-export const logIn = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const existUser = await User.findOne({ username });
+    const existUser = await User.findOne({ username }).select('+password');
 
     if (!existUser) {
       return res.status(401).json({ message: 'Invalid username' });
