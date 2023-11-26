@@ -1,33 +1,56 @@
-import { Button, Flex, Form, Input } from 'antd';
+import { Button, Flex, Form, Input, Typography, DatePicker } from 'antd';
+const { Title, Text } = Typography;
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch,useSelector } from 'react-redux';
+import { registerLoading } from '../redux/Reducers/authSlice';
+import backgroundImage from '../assets/unknown.png';
 
-const onFinish = (values) => {
-  console.log('Success:', values);
-};
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
 
 export const Register = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.authSlice?.user);
+  const onFinishFailed = (errorInfo) => {
+    dispatch(registerLoading(errorInfo));
+    console.log('Failed:', errorInfo);
+    navigate('/auth/register');
+  };
+
+  const onFinish = (values) => {
+    const {confirmPassword,...valuesWithoutConfirmPassWord} = values
+    dispatch(registerLoading(valuesWithoutConfirmPassWord));
+    if(user)
+     navigate('/auth/login');
+  };
+
   return (
-    <Flex justify="center" align="center" style={{ minHeight: '100vh' }}>
+    <Flex justify="center" align="center" style={{ minHeight: '100vh', background: `url(${backgroundImage}) no-repeat fixed center` }}>
+
       <Form
         layout="vertical"
         labelCol={{
-          span: 8,
+          span: 10,
         }}
         style={{
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
-          width: 500,
+          border: '2px solid orange',
+          borderRadius: '15px',
+          padding: '20px',
+          boxShadow: '0 0 10px rgba(0 ,0 ,0 ,.2)',
+          backdropFilter: 'blur(10px)',
+          width: 450,
+          height: "50%",
           margin: 10,
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
+        <Title style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>REGISTER</Title>
         <Form.Item
-          label="Username"
+          label={<label style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Username</label>}
           name="username"
           rules={[
             {
@@ -36,28 +59,68 @@ export const Register = () => {
             },
           ]}
         >
-          <Input placeholder="Input username" />
+          <Input style={{ padding: 10, borderRadius: 50 }} placeholder="Input username" />
+        </Form.Item>
+        <Form.Item
+          label={<label style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Name</label>}
+          name="name"
+          
+        >
+          <Input style={{ padding: 10, borderRadius: 50 }} placeholder="Input name" />
+        </Form.Item>
+        <Form.Item
+          label={<label style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Date of birth</label>}
+          name="dob"         
+        >
+          <DatePicker style={{ padding: 10, borderRadius: 50 , width:'100%' }} format={'DD/MM/YYYY'} />
+          {/* <Input type='date' style={{ padding: 10, borderRadius: 50 }} placeholder="Input Date of birth" /> */}
         </Form.Item>
 
         <Form.Item
-          label="Password"
+          label={<label style={{ color: 'white', fontWeight: 'bold', fontSize: '14px' }}>Password</label>}
           name="password"
           rules={[
             {
               required: true,
               message: 'Please input your password!',
             },
+            {
+              min: 7, // Minimum password length
+              message: 'Password must be at least 7 characters long',
+            },
           ]}
         >
-          <Input.Password placeholder="Input your password" />
+          <Input.Password style={{ padding: 10, borderRadius: 50 }} placeholder="Input your password" />
         </Form.Item>
+
         <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
+          label={<label style={{ color: 'white', fontWeight: 'bold', fontSize: '14px' }}>Confirm Password</label>}
+          name="confirmPassword"
+          dependencies={['password']}
+          rules={[
+            {
+              required: true,
+              message: 'Please confirm your password!',
+            }, ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('The new password that you entered do not match!'));
+              },
+            }),
+          ]}
+          
         >
-          <Button type="primary" htmlType="submit">
+          <Input.Password style={{ padding: 10, borderRadius: 50 }} placeholder="Input your confirm password" />
+        </Form.Item>
+
+        <Text style={{ color: 'white', textAlign: 'end', fontSize: '16px', margin: '0 10px 15px 15px' }} >
+          Have account ? <Link to='/auth/login'>Login</Link>
+        </Text>
+
+        <Form.Item >
+          <Button style={{ width: '100%', borderRadius: 50, padding: 10, height: '100%', fontSize: 18, fontWeight: 'bold' }} type="primary" htmlType="submit">
             Submit
           </Button>
         </Form.Item>

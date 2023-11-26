@@ -1,22 +1,24 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { login, register } from '../apis/authApi';
-import { loginSuccessful, logoutSuccessful } from '../Reducers/authSlice';
+import { loginSuccessful,registerSuccessful,registerFail, logoutSuccessful,loginFail } from '../Reducers/authSlice';
 
 function* loginSaga(action) {
   try {
     const res = yield call(login, action.payload);
     yield put(loginSuccessful(res.data));
   } catch (error) {
+    yield put(loginFail(error.response.data));
     console.error(error);
   }
 }
 
-function* registerSaga() {
+function* registerSaga(action) {
   try {
-    const res = yield call(register);
-    yield put(loginSuccessful(res.data));
+    const res = yield call(register, action.payload);
+    yield put(registerSuccessful(res.data));
   } catch (error) {
+    yield put(registerFail(error.response.data));
     console.error(error);
   }
 }
