@@ -36,7 +36,7 @@ export const SupperForm = () => {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="Input username" />
         </Form.Item>
 
         <Form.Item
@@ -49,7 +49,7 @@ export const SupperForm = () => {
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password placeholder="Input your password" />
         </Form.Item>
         <Form.Item
           wrapperCol={{

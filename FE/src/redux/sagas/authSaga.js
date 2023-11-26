@@ -1,11 +1,11 @@
-import { call, put, takeEvery } from 'redux-saga';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { login, register } from '../apis/authApi';
 import { loginSuccessful, logoutSuccessful } from '../Reducers/authSlice';
 
-function* loginSaga() {
+function* loginSaga(action) {
   try {
-    const res = yield call(login);
+    const res = yield call(login, action.payload);
     yield put(loginSuccessful(res.data));
   } catch (error) {
     console.error(error);
@@ -30,7 +30,7 @@ function* logoutSaga() {
 }
 
 export function* watchAuth() {
-  yield takeEvery('auth/login', loginSaga);
-  yield takeEvery('auth/register', registerSaga);
-  yield takeEvery('auth/logout', logoutSaga);
+  yield takeEvery('auth/loginLoading', loginSaga);
+  yield takeEvery('auth/registerLoading', registerSaga);
+  yield takeEvery('auth/logoutLoading', logoutSaga);
 }

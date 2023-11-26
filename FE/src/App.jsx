@@ -1,4 +1,6 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 import { Content } from 'antd/es/layout/layout';
 import { NavBar } from './components/NavBar';
 import { Home } from './pages/Home';
@@ -6,9 +8,11 @@ import { NotFound } from './pages/NotFound';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 const Layout = () => {
+  const isAuth = useSelector((state) => state.authSlice.isAuthenticated);
+  const user = useSelector((state) => state.authSlice.user?.user);
   return (
     <>
-      <NavBar />
+      <NavBar isAuth={isAuth} user={user} />
       <Content>
         <Outlet />
       </Content>

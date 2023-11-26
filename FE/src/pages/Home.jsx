@@ -1,13 +1,15 @@
 // import { SearchInput } from '../components/SearchInput';
 import { Typography } from 'antd';
-import { Content } from 'antd/es/layout/layout';
-import { useEffect } from 'react';
 const { Text } = Typography;
+import { useEffect } from 'react';
+import { Content } from 'antd/es/layout/layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPost } from '../redux/Reducers/postSlice';
+
 import { Post } from '../components/Post';
 import { CommentSection } from '../components/CommentSection.jsx';
+
 import { fetchComment } from '../redux/Reducers/commentSlice';
+import { fetchPost } from '../redux/Reducers/postSlice';
 
 export function Home() {
   const posts = useSelector((state) => state.postSlice.posts);
