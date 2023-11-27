@@ -27,7 +27,7 @@ export const Register = () => {
     navigate('/');
   }
   return (
-    <Flex justify="center" align="center" style={{ minHeight: '100vh', background: `url(${backgroundImage}) no-repeat fixed center` }}>
+    <Flex justify="center" align="center" style={{ minHeight: '100vh', background: `url(${backgroundImage}) no-repeat fixed center`, backgroundSize: 'cover' }}>
 
       <Form
         layout="vertical"
