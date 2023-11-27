@@ -1,7 +1,7 @@
-import { Button, Flex, Form, Input, Typography, DatePicker } from 'antd';
+import { Button, Flex, Form, Input, Typography, DatePicker, Alert } from 'antd';
 const { Title, Text } = Typography;
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { registerLoading } from '../redux/Reducers/authSlice';
 import backgroundImage from '../assets/unknown.png';
 
@@ -9,20 +9,23 @@ import backgroundImage from '../assets/unknown.png';
 export const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.authSlice?.user);
+  const auth = useSelector((state) => state.authSlice);
+  const authMessage = useSelector((state) => state.authSlice?.user.message);
   const onFinishFailed = (errorInfo) => {
     dispatch(registerLoading(errorInfo));
-    console.log('Failed:', errorInfo);
-    navigate('/auth/register');
+    // console.log('Failed:', errorInfo);
+
   };
 
   const onFinish = (values) => {
-    const {confirmPassword,...valuesWithoutConfirmPassWord} = values
+    // eslint-disable-next-line no-unused-vars
+    const { confirmPassword, ...valuesWithoutConfirmPassWord } = values
     dispatch(registerLoading(valuesWithoutConfirmPassWord));
-    if(user)
-     navigate('/auth/login');
-  };
 
+  };
+  if (auth && auth.isAuthenticated) {
+    navigate('/');
+  }
   return (
     <Flex justify="center" align="center" style={{ minHeight: '100vh', background: `url(${backgroundImage}) no-repeat fixed center` }}>
 
@@ -49,6 +52,9 @@ export const Register = () => {
         autoComplete="off"
       >
         <Title style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>REGISTER</Title>
+        <Form.Item>
+          {authMessage ? <Alert message={authMessage} type="error" showIcon /> : null}
+        </Form.Item>
         <Form.Item
           label={<label style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Username</label>}
           name="username"
@@ -64,15 +70,15 @@ export const Register = () => {
         <Form.Item
           label={<label style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Name</label>}
           name="name"
-          
+
         >
           <Input style={{ padding: 10, borderRadius: 50 }} placeholder="Input name" />
         </Form.Item>
         <Form.Item
           label={<label style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Date of birth</label>}
-          name="dob"         
+          name="dob"
         >
-          <DatePicker style={{ padding: 10, borderRadius: 50 , width:'100%' }} format={'DD/MM/YYYY'} />
+          <DatePicker style={{ padding: 10, borderRadius: 50, width: '100%' }} format={'DD/MM/YYYY'} />
           {/* <Input type='date' style={{ padding: 10, borderRadius: 50 }} placeholder="Input Date of birth" /> */}
         </Form.Item>
 
@@ -110,7 +116,7 @@ export const Register = () => {
               },
             }),
           ]}
-          
+
         >
           <Input.Password style={{ padding: 10, borderRadius: 50 }} placeholder="Input your confirm password" />
         </Form.Item>

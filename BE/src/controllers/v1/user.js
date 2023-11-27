@@ -4,6 +4,10 @@ import { compareHashPassword, hashPassword } from '../../utils/authUtil.js';
 export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+    if (!username || !password) {
+      return res.status(401).json({ message: 'Please fill all fields' });
+    }
+
     const existUser = await User.findOne({ username }).select('+password');
 
     if (!existUser) {
@@ -31,9 +35,14 @@ export const login = async (req, res) => {
 export const register = async (req, res) => {
   try {
     const { username, password, name, dob } = req.body;
+    if (!username || !password) {
+      return res
+        .status(401)
+        .json({ message: 'Please fill all required fields' });
+    }
     const existUser = await User.findOne({ username: username });
     if (existUser) {
-      return res.status(400).json({ message: 'username already existed' });
+      return res.status(400).json({ message: 'Username already existed' });
     }
 
     if (password && password.length <= 6) {

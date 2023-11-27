@@ -1,7 +1,13 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import { login, register } from '../apis/authApi';
-import { loginSuccessful,registerSuccessful,registerFail, logoutSuccessful,loginFail } from '../Reducers/authSlice';
+import {
+  loginSuccessful,
+  registerSuccessful,
+  registerFail,
+  logoutSuccessful,
+  loginFail,
+} from '../Reducers/authSlice';
 
 function* loginSaga(action) {
   try {
