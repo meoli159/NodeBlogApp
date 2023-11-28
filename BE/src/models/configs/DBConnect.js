@@ -3,7 +3,10 @@ import 'dotenv/config';
 
 export const DBConnect = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URL);
+    if (!process.env.MONGODB_URI) {
+      throw new Error('Invalid/Missing env: "MONGODB_URI" ');
+    }
+    await mongoose.connect(process.env.MONGODB_URI);
 
     console.log('DB Connected!');
   } catch (err) {

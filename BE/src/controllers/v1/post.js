@@ -3,7 +3,7 @@ import '../../models/user.js';
 import '../../models/comment.js';
 export const getAllPosts = async (req, res) => {
   try {
-    const posts = await Post.find().populate('owner', 'name dob created_at');
+    const posts = await Post.find().populate('owner', 'name created_at');
 
     if (!posts.length > 0) return res.json({ message: 'There is no post!!' });
     return res.json(posts);

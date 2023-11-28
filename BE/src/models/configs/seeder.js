@@ -1,9 +1,10 @@
 import { readFileSync } from 'fs';
-import { DBConnect } from './models/configs/DBConnect.js';
+import { DBConnect } from './DBConnect.js';
 import mongoose from 'mongoose';
-import { Post } from './models/post.js';
-import { User } from './models/user.js';
-import { Comment } from './models/comment.js';
+import { Post } from '../post.js';
+import { User } from '../user.js';
+import { Comment } from '../comment.js';
+import { hashPassword } from '../../utils/authUtil.js';
 
 const convertToObjectId = (id) => new mongoose.Types.ObjectId(id).toString();
 
@@ -32,7 +33,9 @@ const seedDatabase = async () => {
     // Convert user ids to ObjectId
     for (const user of userData) {
       user._id = convertToObjectId(user.id);
+      user.password = await hashPassword(user.password);
       console.log(`Updated user ${user.id} _id to ${user._id}`);
+      console.log(`Hashing password of user ${user.id}`);
     }
     await updateModel(User, '_id', userData);
 

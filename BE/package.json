@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon src/main.js",
     "start": "node src/main.js",
-    "seed": "node src/seeder.js"
+    "seed": "node src/models/configs/seeder.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

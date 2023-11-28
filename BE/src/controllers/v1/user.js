@@ -1,10 +1,14 @@
 import { User } from '../../models/user.js';
 import { compareHashPassword, hashPassword } from '../../utils/authUtil.js';
 
-export const logIn = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { username, password } = req.body;
-    const existUser = await User.findOne({ username });
+    if (!username || !password) {
+      return res.status(401).json({ message: 'Please fill all fields' });
+    }
+
+    const existUser = await User.findOne({ username }).select('+password');
 
     if (!existUser) {
       return res.status(401).json({ message: 'Invalid username' });
@@ -31,10 +35,22 @@ export const logIn = async (req, res) => {
 export const register = async (req, res) => {
   try {
     const { username, password, name, dob } = req.body;
+    if (!username || !password) {
+      return res
+        .status(401)
+        .json({ message: 'Please fill all required fields' });
+    }
     const existUser = await User.findOne({ username: username });
     if (existUser) {
-      return res.status(400).json({ message: 'username already existed' });
+      return res.status(400).json({ message: 'Username already existed' });
     }
+
+    if (password && password.length <= 6) {
+      return res.json({
+        message: 'Please provide a password with more than 6 characters',
+      });
+    }
+
     const user = await User.create({
       username: username,
       password: await hashPassword(password),
