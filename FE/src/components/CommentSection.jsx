@@ -6,6 +6,7 @@ const { Text, Paragraph } = Typography;
 
 const mainCollapse = (commentCount, filteredComments) => [
   {
+    key: '1',
     label: (
       <div style={{ borderBottom: '1px solid grey' }}>
         {`${commentCount} replies`}

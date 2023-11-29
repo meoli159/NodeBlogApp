@@ -13,9 +13,14 @@ const sagaMiddleware = createSagaMiddleware();
 const persistConfig = {
   key: 'root',
   storage: new CookieStorage(Cookies),
-  whitelist: ['authSlice', 'isAuthenticated'],
+  whitelist: ['authSlice'],
 };
-const rootReducer = combineReducers({ postSlice, commentSlice, authSlice });
+
+const rootReducer = combineReducers({
+  postSlice,
+  commentSlice,
+  authSlice,
+});
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({

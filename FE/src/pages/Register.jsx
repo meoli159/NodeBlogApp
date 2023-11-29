@@ -42,7 +42,7 @@ export const Register = () => {
           borderRadius: '15px',
           padding: '20px',
           boxShadow: '0 0 10px rgba(0 ,0 ,0 ,.2)',
-          backdropFilter: 'blur(10px)',
+          backdropFilter: 'blur(20px)',
           width: 450,
           height: "50%",
           margin: 10,
@@ -52,9 +52,7 @@ export const Register = () => {
         autoComplete="off"
       >
         <Title style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>REGISTER</Title>
-        <Form.Item>
-          {authMessage ? <Alert message={authMessage} type="error" showIcon /> : null}
-        </Form.Item>
+        {authMessage && (<Form.Item> <Alert message={authMessage} type="error" showIcon /></Form.Item>)}
         <Form.Item
           label={<label style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Username</label>}
           name="username"
