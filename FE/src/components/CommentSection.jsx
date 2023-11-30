@@ -7,11 +7,7 @@ const { Text, Paragraph } = Typography;
 const mainCollapse = (commentCount, filteredComments) => [
   {
     key: '1',
-    label: (
-      <div style={{ borderBottom: '1px solid grey' }}>
-        {`${commentCount} replies`}
-      </div>
-    ),
+    label: <div style={{ borderBottom: '1px solid grey' }}>{`${commentCount} replies`}</div>,
     showArrow: false,
     children: (
       <>
@@ -29,9 +25,7 @@ const mainCollapse = (commentCount, filteredComments) => [
                 }}
               >
                 {comment.owner.name || comment.owner.username}
-                <Text style={{ color: 'darkgray', marginLeft: '10px' }}>
-                  {formDateToNow(comment.created_at)}
-                </Text>
+                <Text style={{ color: 'darkgray', marginLeft: '10px' }}>{formDateToNow(comment.created_at)}</Text>
               </Text>
 
               <Paragraph>{comment.content}</Paragraph>
@@ -45,25 +39,15 @@ const mainCollapse = (commentCount, filteredComments) => [
 ];
 
 export const CommentSection = ({ postId, comments }) => {
-  const filteredComments = comments.filter(
-    (comment) => comment.post._id === postId
-  );
+  const filteredComments = comments.filter((comment) => comment.post._id === postId);
   const commentCount = filteredComments.length;
 
   return (
     <>
       {commentCount > 0 ? (
-        <Collapse
-          ghost
-          defaultActiveKey={['0']}
-          items={mainCollapse(commentCount, filteredComments)}
-        />
+        <Collapse ghost defaultActiveKey={['0']} items={mainCollapse(commentCount, filteredComments)} />
       ) : (
-        <Collapse
-          ghost
-          collapsible="disabled"
-          items={mainCollapse(commentCount, filteredComments)}
-        />
+        <Collapse ghost collapsible="icon" items={mainCollapse(commentCount, filteredComments)} />
       )}
     </>
   );

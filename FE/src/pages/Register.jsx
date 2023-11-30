@@ -1,34 +1,41 @@
 import { Button, Flex, Form, Input, Typography, DatePicker, Alert } from 'antd';
 const { Title, Text } = Typography;
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerLoading } from '../redux/Reducers/authSlice';
 import backgroundImage from '../assets/unknown.png';
 
-
 export const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.authSlice);
+  const isAuthenticated = useSelector((state) => state.authSlice.isAuthenticated);
   const authMessage = useSelector((state) => state.authSlice?.user.message);
   const onFinishFailed = (errorInfo) => {
     dispatch(registerLoading(errorInfo));
     // console.log('Failed:', errorInfo);
-
   };
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/auth/login');
+    }
+  }, [isAuthenticated, navigate]);
   const onFinish = (values) => {
     // eslint-disable-next-line no-unused-vars
-    const { confirmPassword, ...valuesWithoutConfirmPassWord } = values
+    const { confirmPassword, ...valuesWithoutConfirmPassWord } = values;
     dispatch(registerLoading(valuesWithoutConfirmPassWord));
-
   };
-  if (auth && auth.isAuthenticated) {
-    navigate('/');
-  }
-  return (
-    <Flex justify="center" align="center" style={{ minHeight: '100vh', background: `url(${backgroundImage}) no-repeat fixed center`, backgroundSize: 'cover' }}>
 
+  return (
+    <Flex
+      justify="center"
+      align="center"
+      style={{
+        minHeight: '100vh',
+        background: `url(${backgroundImage}) no-repeat fixed center`,
+        backgroundSize: 'cover',
+      }}
+    >
       <Form
         layout="vertical"
         labelCol={{
@@ -44,7 +51,7 @@ export const Register = () => {
           boxShadow: '0 0 10px rgba(0 ,0 ,0 ,.2)',
           backdropFilter: 'blur(20px)',
           width: 450,
-          height: "50%",
+          height: '50%',
           margin: 10,
         }}
         onFinish={onFinish}
@@ -52,7 +59,12 @@ export const Register = () => {
         autoComplete="off"
       >
         <Title style={{ textAlign: 'center', color: 'white', fontWeight: 'bold' }}>REGISTER</Title>
-        {authMessage && (<Form.Item> <Alert message={authMessage} type="error" showIcon /></Form.Item>)}
+        {authMessage && (
+          <Form.Item>
+            {' '}
+            <Alert message={authMessage} type="error" showIcon />
+          </Form.Item>
+        )}
         <Form.Item
           label={<label style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Username</label>}
           name="username"
@@ -68,7 +80,6 @@ export const Register = () => {
         <Form.Item
           label={<label style={{ color: 'white', fontSize: '14px', fontWeight: 'bold' }}>Name</label>}
           name="name"
-
         >
           <Input style={{ padding: 10, borderRadius: 50 }} placeholder="Input name" />
         </Form.Item>
@@ -105,7 +116,8 @@ export const Register = () => {
             {
               required: true,
               message: 'Please confirm your password!',
-            }, ({ getFieldValue }) => ({
+            },
+            ({ getFieldValue }) => ({
               validator(_, value) {
                 if (!value || getFieldValue('password') === value) {
                   return Promise.resolve();
@@ -114,17 +126,20 @@ export const Register = () => {
               },
             }),
           ]}
-
         >
           <Input.Password style={{ padding: 10, borderRadius: 50 }} placeholder="Input your confirm password" />
         </Form.Item>
 
-        <Text style={{ color: 'white', textAlign: 'end', fontSize: '16px', margin: '0 10px 15px 15px' }} >
-          Have account ? <Link to='/auth/login'>Login</Link>
+        <Text style={{ color: 'white', textAlign: 'end', fontSize: '16px', margin: '0 10px 15px 15px' }}>
+          Have account ? <Link to="/auth/login">Login</Link>
         </Text>
 
-        <Form.Item >
-          <Button style={{ width: '100%', borderRadius: 50, padding: 10, height: '100%', fontSize: 18, fontWeight: 'bold' }} type="primary" htmlType="submit">
+        <Form.Item>
+          <Button
+            style={{ width: '100%', borderRadius: 50, padding: 10, height: '100%', fontSize: 18, fontWeight: 'bold' }}
+            type="primary"
+            htmlType="submit"
+          >
             Submit
           </Button>
         </Form.Item>

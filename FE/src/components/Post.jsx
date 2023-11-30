@@ -15,16 +15,11 @@ export const Post = ({ props }) => {
       <Divider style={{ margin: '0' }}>
         <Title>{props.title}</Title>
       </Divider>
-      <Flex justify="space-between" style={{ marginBottom: '20px' }}>
+      <Flex justify="space-between">
+        {/* also don't try this */}
         <div>
-          <Paragraph strong style={{ fontSize: '14px' }}> {/* also dont try this */}
-            Author:
-            {props.owner?.name === '' ? 'Anonymous' : props.owner?.name}  
-            
-          </Paragraph>
-          <Paragraph strong style={{ fontSize: '14px' }}>
-            Create at: {formattedCreatedAt(props.created_at)}
-          </Paragraph>
+          <Paragraph strong>Author: {props.owner?.name === '' ? 'Anonymous' : props.owner?.name}</Paragraph>
+          <Paragraph strong>Create at: {formattedCreatedAt(props.created_at)}</Paragraph>
         </div>
         <div>
           {props.tags?.map((tag, index) => (

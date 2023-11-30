@@ -1,5 +1,6 @@
 import { Button, Flex, Form, Input, Typography, Alert } from 'antd';
 const { Title, Text } = Typography;
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginLoading } from '../redux/Reducers/authSlice';
@@ -7,6 +8,7 @@ import backgroundImage from '../assets/unknown.png';
 
 export const Login = () => {
   const authMessage = useSelector((state) => state.authSlice.user?.message);
+  const isAuthenticated = useSelector((state) => state.authSlice.isAuthenticated);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -15,8 +17,14 @@ export const Login = () => {
   };
 
   const onFinish = async (values) => {
-    dispatch(loginLoading(values)).then(navigate('/'));
+    dispatch(loginLoading(values));
   };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <Flex
