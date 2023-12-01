@@ -1,12 +1,11 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
 import { Content } from 'antd/es/layout/layout';
 import { NavBar } from './components/NavBar';
 import { Home } from './pages/Home';
 import { NotFound } from './pages/NotFound';
-import { Login } from './pages/Login';
-import { Register } from './pages/Register';
+// import { Register } from './pages/Register';
+
 const Layout = () => {
   const isAuth = useSelector((state) => state.authSlice.isAuthenticated);
   const user = useSelector((state) => state.authSlice.user?.user);
@@ -36,11 +35,17 @@ const route = createBrowserRouter([
     children: [
       {
         path: 'login',
-        element: <Login />,
+        lazy: async () => {
+          let { Login } = await import('./pages/Login');
+          return { Component: Login };
+        },
       },
       {
         path: 'register',
-        element: <Register />,
+        lazy: async () => {
+          let { Register } = await import('./pages/Register');
+          return { Component: Register };
+        },
       },
     ],
   },
@@ -50,11 +55,7 @@ const route = createBrowserRouter([
   },
 ]);
 function App() {
-  return (
-    <>
-      <RouterProvider router={route} />
-    </>
-  );
+  return <RouterProvider router={route} />;
 }
 
 export default App;
